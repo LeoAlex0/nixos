@@ -54,13 +54,30 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    wget vim git firefox fcitx fcitx-configtool
+    wget vim git firefox
+    fcitx fcitx-configtool
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
-  programs.mtr.enable = true;
-  programs.gnupg.agent = { enable = true; enableSSHSupport = true; };
+  programs = {
+    light.enable = true;
+    adb.enable = true;
+    java.enable = true;
+    mtr.enable = true;
+    gnupg.agent = {
+      enable = true; 
+      enableSSHSupport = true;
+    };
+    zsh = {
+      enable = true;
+      ohMyZsh = {
+        enable = true;
+        plugins = [ "git" "python" "man" ];
+        theme = "robbyrussell";
+      };
+    };
+  };
 
   # List services that you want to enable:
 
@@ -96,7 +113,10 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.leo = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" ]; # Enable ‘sudo’ for the user.
+    uid = 1000;
+    extraGroups = [ "wheel" "audio" "video" "disk" "cdrom" "users" "systemd-journal" ]; # Enable ‘sudo’ for the user.
+    description = "zLeoALex";
+    shell = pkgs.zsh;
   };
 
   # This value determines the NixOS release with which your system is to be
