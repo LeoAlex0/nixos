@@ -31,6 +31,7 @@
     consoleKeyMap = "us";
     defaultLocale = "zh_CN.UTF-8";
     supportedLocales = [ "zh_CN.UTF-8/UTF-8" "en_US.UTF-8/UTF-8" "ja_JP.UTF-8/UTF-8" ];
+    inputMethod.enabled = "fcitx";
   };
 
   # Fonts
@@ -53,7 +54,7 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    wget vim git firefox
+    wget vim git firefox fcitx fcitx-configtool
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
