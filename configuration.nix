@@ -51,10 +51,14 @@
   # Set your time zone.
   time.timeZone = "Asia/Shanghai";
 
+  nixpkgs.config = {
+    allowUnfree = true;
+  };
+
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    wget vim git firefox
+    wget vim git google-chrome
     fcitx fcitx-configtool
   ];
 
@@ -103,7 +107,7 @@
     enable = true;
     layout = "us";
     xkbOptions = "eurosign:e";
-    dpi = 244;
+    dpi = 198;
   };
 
   # Enable touchpad support.
