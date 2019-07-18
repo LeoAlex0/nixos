@@ -103,7 +103,7 @@
     enable = true;
     layout = "us";
     xkbOptions = "eurosign:e";
-    dpi = 144;
+    dpi = 244;
   };
 
   # Enable touchpad support.
