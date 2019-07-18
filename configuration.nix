@@ -31,7 +31,10 @@
     consoleKeyMap = "us";
     defaultLocale = "zh_CN.UTF-8";
     supportedLocales = [ "zh_CN.UTF-8/UTF-8" "en_US.UTF-8/UTF-8" "ja_JP.UTF-8/UTF-8" ];
-    inputMethod.enabled = "fcitx";
+    inputMethod = {
+      enabled = "fcitx";
+      fcitx.engines = with pkgs.fcitx-engines; [ mozc ];
+    };
   };
 
   # Fonts
@@ -59,7 +62,7 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     wget vim git google-chrome
-    fcitx fcitx-configtool
+    fcitx fcitx-configtool libsForQt5.fcitx-qt5
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
