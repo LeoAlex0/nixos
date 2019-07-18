@@ -131,16 +131,16 @@
 
   security.sudo = {
     enable = true;
-    extraRules = [ 
-      { 
-        commands = [ 
-          { 
+    extraRules = [
+      {
+        commands = [
+          {
             command = "ALL";
             options = [ "NOPASSWD" ];
           }
         ];
-        groups = ["wheel"]; 
-      } 
+        groups = ["wheel"];
+      }
     ];
   };
 
