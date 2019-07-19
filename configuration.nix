@@ -62,10 +62,21 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     wget vim git google-chrome
-    #Input Methods
+    # Input Methods
     fcitx fcitx-configtool libsForQt5.fcitx-qt5
-    #Document-work
+    # Document-work
     texlive.combined.scheme-full lyx typora pandoc
+
+    # Coding-work-compiliers
+    gcc gdb stack ghc idris go python37Full
+    # Coding-work-tools
+    cmake gnumake
+    python37Packages.ipython
+    haskellPackages.idringen haskellPackages.stack haskellPackages.happy haskellPackages.alex
+    android-studio jetbrains.idea-ultimate jetbrains.clion jetbrains.pycharm-professional jetbrains.jdk qtcreator
+    # Coding-work-libs
+    opencv
+    haskellPackages.yesod
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
