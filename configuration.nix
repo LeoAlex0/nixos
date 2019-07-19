@@ -62,7 +62,10 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     wget vim git google-chrome
+    #Input Methods
     fcitx fcitx-configtool libsForQt5.fcitx-qt5
+    #Document-work
+    texlive.combined.scheme-full lyx typora pandoc
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
