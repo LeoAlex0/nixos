@@ -48,6 +48,7 @@
       noto-fonts-emoji
       wqy_microhei
       wqy_zenhei
+      fira-code
     ];
   };
 
@@ -61,6 +62,7 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    psmisc
     wget vim git google-chrome
     # Input Methods
     fcitx fcitx-configtool libsForQt5.fcitx-qt5
@@ -70,9 +72,9 @@
     # Coding-work-compiliers
     gcc gdb stack ghc idris go python37Full
     # Coding-work-tools
-    cmake gnumake
+    cmake gnumake xclip
     python37Packages.ipython
-    haskellPackages.idringen haskellPackages.stack haskellPackages.happy haskellPackages.alex
+    haskellPackages.idringen haskellPackages.Cabal_2_4_1_0 haskellPackages.stack haskellPackages.happy haskellPackages.alex
     android-studio jetbrains.idea-ultimate jetbrains.clion jetbrains.pycharm-professional jetbrains.jdk qtcreator
     # Coding-work-libs
     opencv
