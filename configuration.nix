@@ -63,22 +63,25 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     psmisc
-    wget vim git google-chrome
+    axel git google-chrome
     # Input Methods
     fcitx fcitx-configtool libsForQt5.fcitx-qt5
     # Document-work
     texlive.combined.scheme-full lyx typora pandoc
 
     # Coding-work-compiliers
-    gcc gdb stack ghc idris go python37Full
+    gcc gdb stack cabal-install ghc idris go python37Full
     # Coding-work-tools
-    cmake gnumake xclip
+    cmake gnumake xclip ccls
     python37Packages.ipython
-    haskellPackages.idringen haskellPackages.Cabal_2_4_1_0 haskellPackages.stack haskellPackages.happy haskellPackages.alex
+    haskellPackages.idringen haskellPackages.stack haskellPackages.happy haskellPackages.alex haskellPackages.hoogle haskellPackages.hlint
     android-studio jetbrains.idea-ultimate jetbrains.clion jetbrains.pycharm-professional jetbrains.jdk qtcreator
     # Coding-work-libs
     opencv
     haskellPackages.yesod
+
+    # Vim Plugins Depends
+    nodejs yarn
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -100,6 +103,7 @@
         theme = "robbyrussell";
       };
     };
+    vim.defaultEditor = true;
   };
 
   # List services that you want to enable:
