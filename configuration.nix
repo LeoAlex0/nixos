@@ -73,7 +73,7 @@
     gcc gdb stack cabal-install ghc idris go python37Full
     # Coding-work-tools
     cmake gnumake xclip ccls
-    python37Packages.ipython
+    python37Packages.ipython python37Packages.pip
     haskellPackages.idringen haskellPackages.stack haskellPackages.happy haskellPackages.alex haskellPackages.hoogle haskellPackages.hlint
     android-studio jetbrains.idea-ultimate jetbrains.clion jetbrains.pycharm-professional jetbrains.jdk qtcreator
     # Coding-work-libs
@@ -82,6 +82,9 @@
 
     # Vim Plugins Depends
     nodejs yarn
+
+    # Wine
+    wine-staging winetricks
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
