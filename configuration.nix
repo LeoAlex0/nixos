@@ -12,12 +12,13 @@
 
   # Use the systemd-boot EFI boot loader.
   # boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = false;
+  boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.grub = {
     useOSProber = true;
     efiSupport = true;
     device = "nodev";
   };
+  boot.supportedFilesystems = [ "nfs" "ntfs" "exfat" ];
 
   networking.hostName = "Leo-NSys"; # Define your hostname.
 
@@ -57,34 +58,44 @@
 
   nixpkgs.config = {
     allowUnfree = true;
+    chromium.enablePepperFlash = true;
   };
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    # Editor
+    neovim
+
+    # AppImage
+    appimage-run
+    
+    # Misc
     psmisc
-    axel git google-chrome
+    axel git chromium
     # Input Methods
     fcitx fcitx-configtool libsForQt5.fcitx-qt5
     # Document-work
-    texlive.combined.scheme-full lyx typora pandoc
+    lyx typora pandoc
 
+    # Coding-work-libs
+    opencv qt5.full
+    
     # Coding-work-compiliers
-    gcc gdb stack cabal-install ghc idris go python37Full
+    binutils gcc gdb stack idris go python37Full
     # Coding-work-tools
     cmake gnumake xclip ccls
     python37Packages.ipython python37Packages.pip
-    haskellPackages.idringen haskellPackages.stack haskellPackages.happy haskellPackages.alex haskellPackages.hoogle haskellPackages.hlint
-    android-studio jetbrains.idea-ultimate jetbrains.clion jetbrains.pycharm-professional jetbrains.jdk qtcreator
-    # Coding-work-libs
-    opencv
-    haskellPackages.yesod
+    android-studio jetbrains.idea-ultimate jetbrains.clion jetbrains.pycharm-professional jetbrains.jdk
 
     # Vim Plugins Depends
     nodejs yarn
 
     # Wine
     wine-staging winetricks
+    
+    # WireShark
+    wireshark
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -106,7 +117,6 @@
         theme = "robbyrussell";
       };
     };
-    vim.defaultEditor = true;
   };
 
   # List services that you want to enable:
@@ -147,8 +157,8 @@
   users.users.leo = {
     isNormalUser = true;
     uid = 1000;
-    extraGroups = [ "wheel" "audio" "video" "disk" "cdrom" "users" "systemd-journal" ]; # Enable ‘sudo’ for the user.
-    description = "zLeoALex";
+    extraGroups = [ "wheel" "audio" "video" "disk" "cdrom" "users" "systemd-journal" "wireshark" ]; # Enable ‘sudo’ for the user.
+    description = "zLeoAlex";
     shell = pkgs.zsh;
   };
 
