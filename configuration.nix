@@ -8,115 +8,100 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ./home.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
-  # boot.loader.systemd-boot.enable = true;
+  boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.grub = {
-    useOSProber = true;
-    efiSupport = true;
-    device = "nodev";
-  };
-  boot.supportedFilesystems = [ "nfs" "ntfs" "exfat" ];
+  boot.loader.efi.efiSysMountPoint = "/boot/efi";
 
   networking.hostName = "Leo-NSys"; # Define your hostname.
+  # Pick only one of the below networking options.
+  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+  networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
+
+  # Set your time zone.
+  time.timeZone = "Asia/Shanghai";
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   # Select internationalisation properties.
-  i18n = {
-    consoleFont = "Lat2-Terminus16";
-    consoleKeyMap = "us";
-    defaultLocale = "zh_CN.UTF-8";
-    supportedLocales = [ "zh_CN.UTF-8/UTF-8" "en_US.UTF-8/UTF-8" "ja_JP.UTF-8/UTF-8" ];
-    inputMethod = {
-      enabled = "fcitx";
-      fcitx.engines = with pkgs.fcitx-engines; [ mozc ];
-    };
-  };
-
-  # Fonts
-  fonts = {
-    fontconfig.enable = true;
-    enableFontDir = true;
-    enableGhostscriptFonts = true;
-    fonts = with pkgs; [
-      noto-fonts
-      noto-fonts-cjk
-      noto-fonts-emoji
-      wqy_microhei
-      wqy_zenhei
-      fira-code
+  i18n.defaultLocale = "en_US.UTF-8";
+  i18n.inputMethod = {
+    enabled = "ibus";
+    ibus.engines = with pkgs.ibus-engines; [
+      libpinyin
+      anthy
     ];
   };
+  # console = {
+  #   font = "Lat2-Terminus16";
+  #   keyMap = "us";
+  #   useXkbConfig = true; # use xkbOptions in tty.
+  # };
+  fonts.fonts = with pkgs; [
+    fira-code
+    fira-code-symbols
+    noto-fonts
+    noto-fonts-cjk
+    noto-fonts-emoji
+  ];
 
-  # Set your time zone.
-  time.timeZone = "Asia/Shanghai";
+  # Enable the X11 windowing system.
+  services.xserver.enable = true;
 
-  nixpkgs.config = {
-    allowUnfree = true;
-    chromium.enablePepperFlash = true;
+
+  # Enable the GNOME Desktop Environment.
+  services.xserver.displayManager.gdm.enable = true;
+  services.xserver.desktopManager.gnome.enable = true;
+  
+  # Configure keymap in X11
+  # services.xserver.layout = "us";
+  # services.xserver.xkbOptions = {
+  #   "eurosign:e";
+  #   "caps:escape" # map caps to escape.
+  # };
+
+  # Enable CUPS to print documents.
+  # services.printing.enable = true;
+
+  # Enable sound.
+  sound.enable = true;
+  hardware.pulseaudio.enable = true;
+
+  # Enable touchpad support (enabled default in most desktopManager).
+  services.xserver.libinput.enable = true;
+
+  # Define a user account. Don't forget to set a password with ‘passwd’.
+  users.users.leo = {
+    isNormalUser = true;
+    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
+    shell = pkgs.zsh;
+    packages = with pkgs; [
+    ];
   };
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    # Editor
-    neovim
-
-    # AppImage
-    appimage-run
-    
-    # Misc
-    psmisc
-    axel git chromium
-    # Input Methods
-    fcitx fcitx-configtool libsForQt5.fcitx-qt5
-    # Document-work
-    lyx typora pandoc
-
-    # Coding-work-libs
-    opencv qt5.full
-    
-    # Coding-work-compiliers
-    binutils gcc gdb stack idris go python37Full
-    # Coding-work-tools
-    cmake gnumake xclip ccls
-    python37Packages.ipython python37Packages.pip
-    android-studio jetbrains.idea-ultimate jetbrains.clion jetbrains.pycharm-professional jetbrains.jdk
-
-    # Vim Plugins Depends
-    nodejs yarn
-
-    # Wine
-    wine-staging winetricks
-    
-    # WireShark
-    wireshark
+    vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    wget git
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
-  programs = {
-    light.enable = true;
-    adb.enable = true;
-    java.enable = true;
-    mtr.enable = true;
-    gnupg.agent = {
-      enable = true; 
-      enableSSHSupport = true;
-    };
-    zsh = {
-      enable = true;
-      ohMyZsh = {
-        enable = true;
-        plugins = [ "git" "python" "man" ];
-        theme = "robbyrussell";
-      };
-    };
+  # programs.mtr.enable = true;
+  # programs.gnupg.agent = {
+  #   enable = true;
+  #   enableSSHSupport = true;
+  # };
+  programs.dconf.enable = true;
+
+  environment.sessionVariables = {
+    MOZ_USE_XINPUT2 = "1";
   };
 
   # List services that you want to enable:
@@ -128,59 +113,22 @@
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
-  networking.firewall.enable = false;
-  networking.networkmanager.enable = true;
+  # networking.firewall.enable = false;
 
-  # Enable CUPS to print documents.
-  # services.printing.enable = true;
+  nix.settings.substituters = [ "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store" ];
+  nixpkgs.config.allowUnfree = true;
 
-  # Enable sound.
-  sound.enable = true;
-  hardware.pulseaudio.enable = true;
+  # Copy the NixOS configuration file and link it from the resulting system
+  # (/run/current-system/configuration.nix). This is useful in case you
+  # accidentally delete configuration.nix.
+  # system.copySystemConfiguration = true;
 
-  # Enable the X11 windowing system.
-  services.xserver = {
-    enable = true;
-    layout = "us";
-    xkbOptions = "eurosign:e";
-    dpi = 198;
-  };
-
-  # Enable touchpad support.
-  services.xserver.libinput.enable = true;
-
-  # Enable the KDE Desktop Environment.
-  services.xserver.displayManager.sddm.enable = true;
-  services.xserver.desktopManager.plasma5.enable = true;
-
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.leo = {
-    isNormalUser = true;
-    uid = 1000;
-    extraGroups = [ "wheel" "audio" "video" "disk" "cdrom" "users" "systemd-journal" "wireshark" ]; # Enable ‘sudo’ for the user.
-    description = "zLeoAlex";
-    shell = pkgs.zsh;
-  };
-
-  security.sudo = {
-    enable = true;
-    extraRules = [
-      {
-        commands = [
-          {
-            command = "ALL";
-            options = [ "NOPASSWD" ];
-          }
-        ];
-        groups = ["wheel"];
-      }
-    ];
-  };
-
-  # This value determines the NixOS release with which your system is to be
-  # compatible, in order to avoid breaking some software such as database
-  # servers. You should change this only after NixOS release notes say you
-  # should.
-  system.stateVersion = "19.03"; # Did you read the comment?
-
+  # This value determines the NixOS release from which the default
+  # settings for stateful data, like file locations and database versions
+  # on your system were taken. It‘s perfectly fine and recommended to leave
+  # this value at the release version of the first install of this system.
+  # Before changing this value read the documentation for this option
+  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
+  system.stateVersion = "22.05"; # Did you read the comment?
 }
+
