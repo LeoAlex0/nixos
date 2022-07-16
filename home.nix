@@ -13,7 +13,7 @@ in {
     home.language.base = "zh_CN.UTF-8";
     home.packages = with pkgs; [
       # Daily
-      thunderbird rnix-lsp
+      rnix-lsp tdesktop qgnomeplatform
 
       # Art
       krita
@@ -23,6 +23,9 @@ in {
       cargo rustc
       go
     ];
+
+    gtk.theme.name = "Adwaita-dark";
+    qt.platformTheme = "gnome";
 
     programs.zsh = {
       enable = true;
@@ -39,6 +42,23 @@ in {
 
     programs.vscode = {
       enable = true;
+      extensions = with pkgs.vscode-extensions; [
+        ms-ceintl.vscode-language-pack-zh-hans 
+        matklad.rust-analyzer
+        jnoortheen.nix-ide
+        arrterian.nix-env-selector
+        ms-vscode-remote.remote-ssh
+      ];
+      userSettings = {
+        "editor.cursorSmoothCaretAnimation" = true;
+        "editor.smoothScrolling" = true;
+        "workbench.list.smoothScrolling" = true;
+        "editor.fontFamily" = "'Fira Code','Droid Sans Mono', 'Noto Sans Mono', 'monospace', monospace";
+        "editor.fontLigatures" = true;
+        "[rust]" = {
+          "editor.defaultFormatter" = "rust-lang.rust-analyzer";
+        };
+      };
     };
   };
 }
