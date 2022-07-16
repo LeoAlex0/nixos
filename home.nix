@@ -24,9 +24,6 @@ in {
       go
     ];
 
-    gtk.theme.name = "Adwaita-dark";
-    qt.platformTheme = "gnome";
-
     programs.zsh = {
       enable = true;
       oh-my-zsh = {
