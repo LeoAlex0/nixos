@@ -13,7 +13,8 @@ in {
     home.language.base = "zh_CN.UTF-8";
     home.packages = with pkgs; [
       # Daily
-      rnix-lsp tdesktop qgnomeplatform
+      rnix-lsp nixpkgs-fmt
+      tdesktop qgnomeplatform vlc
 
       # Art
       krita
@@ -45,6 +46,7 @@ in {
         jnoortheen.nix-ide
         arrterian.nix-env-selector
         ms-vscode-remote.remote-ssh
+        yzhang.markdown-all-in-one
       ];
       userSettings = {
         "editor.cursorSmoothCaretAnimation" = true;
