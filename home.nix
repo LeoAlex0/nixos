@@ -6,6 +6,7 @@ in {
   imports = [
     (import "${home-manager}/nixos")
   ];
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
   
   home-manager.users.leo = {
     nixpkgs.config.allowUnfree = true;
