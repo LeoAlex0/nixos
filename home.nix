@@ -16,14 +16,21 @@ in {
       # Daily
       rnix-lsp nixpkgs-fmt
       tdesktop qgnomeplatform vlc
+      gnomeExtensions.simple-system-monitor
 
       # Art
       krita
 
       # Code
       clang
-      cargo rustc
+      rustup
       go
+
+      # Network
+      qv2ray
+      v2ray
+      v2ray-domain-list-community
+      v2ray-geoip
     ];
 
     programs.zsh = {

@@ -99,6 +99,7 @@
   #   enableSSHSupport = true;
   # };
   programs.dconf.enable = true;
+  programs.zsh.enable = true;
 
   environment.sessionVariables = {
     MOZ_USE_XINPUT2 = "1";
@@ -115,7 +116,7 @@
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
 
-  nix.settings.substituters = [ "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store" ];
+  nix.settings.substituters = [ "https://mirrors.ustc.edu.cn/nix-channels/store" "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store" ];
   nixpkgs.config.allowUnfree = true;
 
   # Copy the NixOS configuration file and link it from the resulting system
