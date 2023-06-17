@@ -20,9 +20,11 @@
   # home-manager.users.leo = {
   #   imports = [ ./home.nix ];
   # };
-  
+
   # HOTFIX: kernel build error, see also: https://github.com/NixOS/nixos-hardware/issues/611
   microsoft-surface.kernelVersion = "6.1.18";
+  # HOTFIX: iptsd start error, see also: https://github.com/NixOS/nixos-hardware/issues/552
+  microsoft-surface.ipts.enable = lib.mkForce false;
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
