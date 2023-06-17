@@ -2,24 +2,73 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config
+, pkgs
+, lib
+, home-manager ? builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/master.tar.gz"
+, ...
+}:
 
 {
   imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      ./home.nix
+    [
+      # (import "${home-manager}/nixos")
+      # Include the results of the hardware scan.
+      # ./hardware-configuration.nix
+      # ./home.nix
     ];
+  # home-manager.users.leo = {
+  #   imports = [ ./home.nix ];
+  # };
+  
+  # HOTFIX: kernel build error, see also: https://github.com/NixOS/nixos-hardware/issues/611
+  microsoft-surface.kernelVersion = "6.1.18";
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
 
+  boot.initrd.availableKernelModules = [ "xhci_pci" "nvme" "usb_storage" "sd_mod" ];
+  boot.initrd.kernelModules = [ ];
+  boot.kernelModules = [ "kvm-intel" ];
+  boot.extraModulePackages = [ ];
+
+  fileSystems."/" =
+    {
+      device = "/dev/disk/by-uuid/09452dce-831d-4c3e-938e-998fc1c07c08";
+      fsType = "ext4";
+    };
+
+  boot.initrd.luks.devices."Root".device = "/dev/disk/by-uuid/b53fb328-f304-40da-ab74-acd89485caa1";
+
+  fileSystems."/boot/efi" =
+    {
+      device = "/dev/disk/by-uuid/C4D5-D454";
+      fsType = "vfat";
+    };
+
+  swapDevices = [ ];
+
+  # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
+  # (the default) this is the recommended approach. When using systemd-networkd it's
+  # still possible to use this option, but it's recommended to use it in conjunction
+  # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
+  networking.useDHCP = lib.mkDefault true;
+  # networking.interfaces.wlp2s0.useDHCP = lib.mkDefault true;
+
+  powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
+  hardware.cpu.intel.updateMicrocode = lib.mkDefault true;
+
+  virtualisation = {
+    waydroid.enable = true;
+    lxd.enable = true;
+  };
+
   networking.hostName = "Leo-NSys"; # Define your hostname.
   # Pick only one of the below networking options.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-  networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
+  networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
 
   # Set your time zone.
   time.timeZone = "Asia/Shanghai";
@@ -57,7 +106,7 @@
   # Enable the GNOME Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
-  
+
   # Configure keymap in X11
   # services.xserver.layout = "us";
   # services.xserver.xkbOptions = {
@@ -88,7 +137,8 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-    wget git
+    wget
+    git
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -118,6 +168,7 @@
 
   nix.settings.substituters = [ "https://mirrors.ustc.edu.cn/nix-channels/store" "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store" ];
   nixpkgs.config.allowUnfree = true;
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   # Copy the NixOS configuration file and link it from the resulting system
   # (/run/current-system/configuration.nix). This is useful in case you
