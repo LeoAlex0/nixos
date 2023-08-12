@@ -5,22 +5,11 @@
 { config
 , pkgs
 , lib
-, home-manager ? builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/master.tar.gz"
+, home-manager
 , ...
 }:
 
 {
-  imports =
-    [
-      # (import "${home-manager}/nixos")
-      # Include the results of the hardware scan.
-      # ./hardware-configuration.nix
-      # ./home.nix
-    ];
-  # home-manager.users.leo = {
-  #   imports = [ ./home.nix ];
-  # };
-
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
