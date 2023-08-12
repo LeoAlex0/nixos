@@ -10,13 +10,22 @@
 }:
 
 {
-  # Use the systemd-boot EFI boot loader.
-  boot.loader.systemd-boot.enable = true;
+  # Use the lanzaboote boot loader support secure boot.
+  boot.loader.systemd-boot.enable = lib.mkForce false;
+  boot.lanzaboote = {
+    enable = true;
+    pkiBundle = "/etc/secureboot";
+  };
+
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "nvme" "usb_storage" "sd_mod" ];
   boot.initrd.kernelModules = [ ];
+  boot.initrd.luks.devices."Root".device = "/dev/disk/by-uuid/b53fb328-f304-40da-ab74-acd89485caa1";
+
+  boot.bootspec.enable = true;
+
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
@@ -26,7 +35,6 @@
       fsType = "ext4";
     };
 
-  boot.initrd.luks.devices."Root".device = "/dev/disk/by-uuid/b53fb328-f304-40da-ab74-acd89485caa1";
 
   fileSystems."/boot/efi" =
     {
@@ -124,6 +132,7 @@
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     wget
     git
+    sbctl # To manage SecureBoot keys
   ];
 
   # Some programs need SUID wrappers, can be configured further or are

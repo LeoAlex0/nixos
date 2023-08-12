@@ -4,6 +4,12 @@
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-unstable";
 
+    # SecureBoot support
+    lanzaboote = {
+      url = "github:nix-community/lanzaboote";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -12,7 +18,7 @@
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
   };
 
-  outputs = { nixpkgs, nixos-hardware, home-manager, ... }@inputs:
+  outputs = { nixpkgs, nixos-hardware, home-manager, lanzaboote, ... }@inputs:
     let
       system = "x86_64-linux";
 
@@ -31,6 +37,8 @@
           modules = [
             ./configuration.nix
             nixos-hardware.nixosModules.microsoft-surface-pro-intel
+            lanzaboote.nixosModules.lanzaboote # SecureBoot support
+
             home-manager.nixosModules.home-manager
             {
               home-manager.useGlobalPkgs = true;
