@@ -24,21 +24,6 @@
       lib = nixpkgs.lib;
     in
     {
-      homeManagerConfigurations = {
-        leo = home-manager.lib.homeManagerConfiguration {
-          inherit pkgs;
-          modules = [
-            ./home.nix
-            {
-              home = {
-                username = "leo";
-                homeDirectory = "/home/leo";
-              };
-            }
-          ];
-        };
-      };
-
       nixosConfigurations = {
         Leo-NSys = lib.nixosSystem {
           inherit system;
@@ -46,6 +31,15 @@
           modules = [
             ./configuration.nix
             nixos-hardware.nixosModules.microsoft-surface-pro-intel
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.users.leo = import ./home.nix;
+
+              # Optionally, use home-manager.extraSpecialArgs to pass
+              # arguments to home.nix
+            }
           ];
         };
       };
