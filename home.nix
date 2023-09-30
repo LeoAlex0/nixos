@@ -23,7 +23,7 @@
     go
 
     # Network
-    qv2ray
+    v2raya
     v2ray
     v2ray-domain-list-community
     v2ray-geoip
@@ -44,23 +44,23 @@
 
   programs.vscode = {
     enable = true;
-    extensions = with pkgs.vscode-extensions; [
-      ms-ceintl.vscode-language-pack-zh-hans
-      matklad.rust-analyzer
-      jnoortheen.nix-ide
-      arrterian.nix-env-selector
-      ms-vscode-remote.remote-ssh
-      yzhang.markdown-all-in-one
-    ];
-    userSettings = {
-      "editor.cursorSmoothCaretAnimation" = true;
-      "editor.smoothScrolling" = true;
-      "workbench.list.smoothScrolling" = true;
-      "editor.fontFamily" = "'Fira Code','Droid Sans Mono', 'Noto Sans Mono', 'monospace', monospace";
-      "editor.fontLigatures" = true;
-      "[rust]" = {
-        "editor.defaultFormatter" = "rust-lang.rust-analyzer";
-      };
-    };
+    # extensions = with pkgs.vscode-extensions; [
+    #   ms-ceintl.vscode-language-pack-zh-hans
+    #   matklad.rust-analyzer
+    #   jnoortheen.nix-ide
+    #   arrterian.nix-env-selector
+    #   ms-vscode-remote.remote-ssh
+    #   yzhang.markdown-all-in-one
+    # ];
+    # userSettings = {
+    #   "editor.cursorSmoothCaretAnimation" = true;
+    #   "editor.smoothScrolling" = true;
+    #   "workbench.list.smoothScrolling" = true;
+    #   "editor.fontFamily" = "'Fira Code','Droid Sans Mono', 'Noto Sans Mono', 'monospace', monospace";
+    #   "editor.fontLigatures" = true;
+    #   "[rust]" = {
+    #     "editor.defaultFormatter" = "rust-lang.rust-analyzer";
+    #   };
+    # };
   };
 }
