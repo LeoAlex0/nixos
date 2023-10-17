@@ -10,15 +10,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    home-manager = {
-      url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
   };
 
-  outputs = { nixpkgs, nixos-hardware, home-manager, lanzaboote, ... }@inputs:
+  outputs = { nixpkgs, nixos-hardware, lanzaboote, ... }@inputs:
     let
       system = "x86_64-linux";
 
@@ -38,16 +33,6 @@
             ./configuration.nix
             nixos-hardware.nixosModules.microsoft-surface-pro-intel
             lanzaboote.nixosModules.lanzaboote # SecureBoot support
-
-            home-manager.nixosModules.home-manager
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.users.leo = import ./home.nix;
-
-              # Optionally, use home-manager.extraSpecialArgs to pass
-              # arguments to home.nix
-            }
           ];
         };
       };
