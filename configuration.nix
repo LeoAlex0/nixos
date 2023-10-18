@@ -172,7 +172,8 @@
   # networking.firewall.enable = false;
 
   nix.settings.substituters = [ "https://mirrors.ustc.edu.cn/nix-channels/store" "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store" ];
-  nixpkgs.config.allowUnfree = true;
+  nix.settings.trusted-users = [ "root" "@wheel" ];
+
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   # Copy the NixOS configuration file and link it from the resulting system
