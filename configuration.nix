@@ -144,6 +144,7 @@
     wget
     git
     sbctl # To manage SecureBoot keys
+    lm_sensors # To monitor temperature`
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
