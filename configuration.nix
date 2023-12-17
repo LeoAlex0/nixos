@@ -52,6 +52,7 @@
 
   powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault true;
+  hardware.opengl.driSupport32Bit = true; # For wine application support
 
   virtualisation = {
     waydroid.enable = true;
