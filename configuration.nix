@@ -159,7 +159,7 @@
   programs.zsh.enable = true;
 
   environment.sessionVariables = {
-    MOZ_USE_XINPUT2 = "1";
+    # MOZ_USE_XINPUT2 = "1";
   };
 
   # List services that you want to enable:
