@@ -2,8 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config
-, pkgs
+{ pkgs
 , lib
 , ...
 }:
@@ -134,8 +133,6 @@
     isNormalUser = true;
     extraGroups = [ "wheel" "audio" ]; # Enable ‘sudo’ for the user.
     shell = pkgs.zsh;
-    packages = with pkgs; [
-    ];
   };
 
   # List packages installed in system profile. To search, run:
