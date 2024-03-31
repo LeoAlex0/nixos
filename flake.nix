@@ -13,15 +13,9 @@
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
   };
 
-  outputs = { nixpkgs, nixos-hardware, lanzaboote, ... }@inputs:
+  outputs = { nixpkgs, nixos-hardware, lanzaboote, ... }:
     let
       system = "x86_64-linux";
-
-      pkgs = import nixpkgs {
-        inherit system;
-        config.allowUnfree = true;
-      };
-
       lib = nixpkgs.lib;
     in
     {
