@@ -4,6 +4,7 @@
 
 { pkgs
 , lib
+, config
 , ...
 }:
 
@@ -18,27 +19,26 @@
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
 
-  boot.initrd.availableKernelModules = [ "xhci_pci" "nvme" "usb_storage" "sd_mod" ];
+  boot.initrd.availableKernelModules = [ "xhci_pci" "thunderbolt" "nvme" "usb_storage" "sd_mod" ];
   boot.initrd.kernelModules = [ ];
-  boot.initrd.luks.devices."Root".device = "/dev/disk/by-uuid/b53fb328-f304-40da-ab74-acd89485caa1";
-
-  boot.bootspec.enable = true;
-
   boot.kernelModules = [ "kvm-intel" ];
+  boot.kernelParams = [ "i915.force_probe=7d55" ]; # graphics
   boot.extraModulePackages = [ ];
 
+
+  boot.initrd.luks.devices."luks-8ec13f67-f402-4417-86a0-763edac997f9".device = "/dev/disk/by-uuid/8ec13f67-f402-4417-86a0-763edac997f9";
+  
   fileSystems."/" =
-    {
-      device = "/dev/disk/by-uuid/09452dce-831d-4c3e-938e-998fc1c07c08";
+    { device = "/dev/disk/by-uuid/bee06f5c-cfda-4816-a514-5a923dcf87dc";
       fsType = "ext4";
     };
 
-
   fileSystems."/boot/efi" =
-    {
-      device = "/dev/disk/by-uuid/C4D5-D454";
+    { device = "/dev/disk/by-uuid/E848-FC94";
       fsType = "vfat";
+      options = [ "fmask=0022" "dmask=0022" ];
     };
+
 
   swapDevices = [ ];
 
@@ -49,12 +49,15 @@
   networking.useDHCP = lib.mkDefault true;
   # networking.interfaces.wlp2s0.useDHCP = lib.mkDefault true;
 
-  powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
-  hardware.cpu.intel.updateMicrocode = lib.mkDefault true;
-  hardware.opengl.driSupport32Bit = true; # For wine application support
-
-  virtualisation = {
-    waydroid.enable = true;
+  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+  hardware.enableRedistributableFirmware = true;
+  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true;   # For wine application support
+    extraPackages = with pkgs; [
+      vpl-gpu-rt
+    ];
   };
 
   networking.hostName = "Leo-NSys"; # Define your hostname.
@@ -110,11 +113,8 @@
   # Enable CUPS to print documents.
   # services.printing.enable = true;
 
-  # Enable sound.
-  sound.enable = true;
+  # Sound: use pipewire
   hardware.pulseaudio.enable = false;
-
-  # rtkit is optional but recommended
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
@@ -126,12 +126,13 @@
   };
 
   # Enable touchpad support (enabled default in most desktopManager).
-  services.xserver.libinput.enable = true;
+  services.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.leo = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "audio" ]; # Enable ‘sudo’ for the user.
+    description = "zLeoAlex";
+    extraGroups = [ "wheel" "audio" "networkmanager" ]; # Enable ‘sudo’ for the user.
     shell = pkgs.zsh;
   };
 
@@ -186,5 +187,5 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "22.05"; # Did you read the comment?
+  system.stateVersion = "24.05"; # Did you read the comment?
 }
