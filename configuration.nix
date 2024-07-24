@@ -50,6 +50,8 @@
   # networking.interfaces.wlp2s0.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+  nixpkgs.config.allowUnfree = true;
+
   hardware.enableRedistributableFirmware = true;
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
   hardware.graphics = {
@@ -155,6 +157,12 @@
   # };
   programs.dconf.enable = true;
   programs.zsh.enable = true;
+  programs.steam = {
+    enable = true;
+    remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
+    dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
+    localNetworkGameTransfers.openFirewall = true; # Open ports in the firewall for Steam Local Network Game Transfers
+  };
 
   environment.sessionVariables = {
     # MOZ_USE_XINPUT2 = "1";
@@ -168,6 +176,8 @@
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
+  networking.firewall.allowedTCPPortRanges = [ { from = 1000; to = 65535; } ];
+  networking.firewall.allowedUDPPortRanges = [ { from = 1000; to = 65535; } ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
 
