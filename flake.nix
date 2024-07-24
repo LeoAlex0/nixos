@@ -24,8 +24,14 @@
           inherit system;
 
           modules = [
-            ./configuration.nix
+            # Hardware settings
+            nixos-hardware.nixosModules.common-hidpi
+            nixos-hardware.nixosModules.common-pc-laptop
+            nixos-hardware.nixosModules.common-pc-laptop-ssd
+            nixos-hardware.nixosModules.common-cpu-intel
             ./hardware-configuration.nix
+
+            ./configuration.nix
             # nixos-hardware.nixosModules.microsoft-surface-pro-intel
             lanzaboote.nixosModules.lanzaboote # SecureBoot support
           ];
