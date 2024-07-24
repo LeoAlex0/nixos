@@ -25,6 +25,7 @@
 
           modules = [
             ./configuration.nix
+            ./hardware-configuration.nix
             # nixos-hardware.nixosModules.microsoft-surface-pro-intel
             lanzaboote.nixosModules.lanzaboote # SecureBoot support
           ];
