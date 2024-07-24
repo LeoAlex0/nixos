@@ -5,6 +5,7 @@
 , ...
 }: {
   # Use the lanzaboote boot loader support secure boot.
+  boot.loader.systemd-boot.configurationLimit = 3; # Small EFI
   boot.loader.systemd-boot.enable = lib.mkForce false;
   boot.lanzaboote = {
     enable = true;
@@ -18,8 +19,8 @@
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.kernelParams = [ "i915.force_probe=7d55" ]; # graphics
+  boot.kernelPackages = pkgs.linuxPackages_latest; # use latest kernel waiting for firmware.
   boot.extraModulePackages = [ ];
-
 
   boot.initrd.luks.devices."luks-8ec13f67-f402-4417-86a0-763edac997f9".device = "/dev/disk/by-uuid/8ec13f67-f402-4417-86a0-763edac997f9";
   
