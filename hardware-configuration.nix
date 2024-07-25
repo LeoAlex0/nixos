@@ -20,6 +20,9 @@
   boot.kernelModules = [ "kvm-intel" ];
   boot.kernelParams = [ "i915.force_probe=7d55" ]; # graphics
   boot.kernelPackages = pkgs.linuxPackages_latest; # use latest kernel waiting for firmware.
+  boot.extraModprobeConfig = ''
+    options snd-intel-dspcfg dsp_driver=1
+  '';
   boot.extraModulePackages = [ ];
 
   boot.initrd.luks.devices."luks-8ec13f67-f402-4417-86a0-763edac997f9".device = "/dev/disk/by-uuid/8ec13f67-f402-4417-86a0-763edac997f9";
