@@ -89,7 +89,7 @@
   users.users.leo = {
     isNormalUser = true;
     description = "zLeoAlex";
-    extraGroups = [ "wheel" "audio" "networkmanager" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "wheel" "audio" "video" "networkmanager" ]; # Enable ‘sudo’ for the user.
     shell = pkgs.zsh;
   };
 

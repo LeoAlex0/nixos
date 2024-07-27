@@ -20,6 +20,7 @@
   boot.kernelModules = [ "kvm-intel" ];
   boot.kernelParams = [ "i915.force_probe=7d55" ]; # graphics
   boot.kernelPackages = pkgs.linuxPackages_latest; # use latest kernel waiting for firmware.
+  # Sound need legacy dsp driver
   boot.extraModprobeConfig = ''
     options snd-intel-dspcfg dsp_driver=1
   '';
