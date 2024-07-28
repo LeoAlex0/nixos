@@ -5,8 +5,11 @@
 , ...
 }: {
   # Use the lanzaboote boot loader support secure boot.
-  boot.loader.systemd-boot.configurationLimit = 3; # Small EFI
-  boot.loader.systemd-boot.enable = lib.mkForce false;
+  boot.loader.systemd-boot = {
+    enable = lib.mkForce false;
+    editor = false; # For security reason
+    configurationLimit = 3; # Small EFI
+  };
   boot.lanzaboote = {
     enable = true;
     pkiBundle = "/etc/secureboot";
@@ -20,9 +23,10 @@
   boot.kernelModules = [ "kvm-intel" ];
   boot.kernelParams = [ "i915.force_probe=7d55" ]; # graphics
   boot.kernelPackages = pkgs.linuxPackages_latest; # use latest kernel waiting for firmware.
-  # Sound need legacy dsp driver
+  # Sound: https://github.com/thesofproject/linux/issues/4973
   boot.extraModprobeConfig = ''
-    options snd-intel-dspcfg dsp_driver=1
+    options snd_sof_intel_hda_common sof_use_tplg_nhlt=1
+    options snd_sof_pci tplg_filename=sof-hda-generic-ace1-4ch.tplg
   '';
   boot.extraModulePackages = [ ];
 
