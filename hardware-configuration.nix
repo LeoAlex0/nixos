@@ -22,7 +22,7 @@
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.kernelParams = [ "i915.force_probe=7d55" ]; # graphics
-  boot.kernelPackages = pkgs.linuxPackages_latest; # use latest kernel waiting for firmware.
+  # boot.kernelPackages = pkgs.linuxPackages_latest; # use latest kernel waiting for firmware.
   # Sound: https://github.com/thesofproject/linux/issues/4973
   boot.extraModprobeConfig = ''
     options snd_sof_intel_hda_common sof_use_tplg_nhlt=1
@@ -47,13 +47,35 @@
   hardware.enableRedistributableFirmware = true;
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
   
+  # Thunderbolt
+  services.hardware.bolt.enable = true;
+
   # Graphics
   hardware.graphics = {
     enable = true;
     enable32Bit = true;   # For wine application support
+
     extraPackages = with pkgs; [
+      # Quick Sync Video
       vpl-gpu-rt
+
+      # Accelerated Video Playback
+      intel-media-driver
+      libvdpau-va-gl
     ];
+  };
+
+  # Camera (placeholder)
+  hardware.ipu6 = {
+    enable = true;
+    platform = "ipu6epmtl";
+  };
+
+  # Fingerprint Scanner (placeholder)
+  services.fprintd.enable = true;
+  systemd.services.fprintd = {
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig.Type = "simple";
   };
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
