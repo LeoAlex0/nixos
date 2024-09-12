@@ -134,10 +134,10 @@
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
-  networking.firewall.allowedTCPPortRanges = [ { from = 1000; to = 65535; } ];
-  networking.firewall.allowedUDPPortRanges = [ { from = 1000; to = 65535; } ];
+  # networking.firewall.allowedTCPPortRanges = [ { from = 1000; to = 65535; } ];
+  # networking.firewall.allowedUDPPortRanges = [ { from = 1000; to = 65535; } ];
   # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
+  networking.firewall.enable = false;
 
   nix.settings.substituters = [ "https://mirrors.ustc.edu.cn/nix-channels/store" "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store" ];
   nix.settings.trusted-users = [ "root" "@wheel" ];
