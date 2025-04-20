@@ -8,7 +8,7 @@
   boot.loader.systemd-boot = {
     enable = lib.mkForce false;
     editor = false; # For security reason
-    configurationLimit = 3; # Small EFI
+    configurationLimit = 2; # Small EFI
   };
   boot.lanzaboote = {
     enable = true;
@@ -83,10 +83,10 @@
   };
 
   # Camera (placeholder)
-  hardware.ipu6 = {
-    enable = true;
-    platform = "ipu6epmtl";
-  };
+  # hardware.ipu6 = {
+  #   enable = true;
+  #   platform = "ipu6epmtl";
+  # };
 
   # Fingerprint Scanner (placeholder)
   services.fprintd.enable = true;
