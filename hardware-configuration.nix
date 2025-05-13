@@ -21,9 +21,11 @@
   boot.initrd.availableKernelModules = [ "xhci_pci" "thunderbolt" "nvme" "usb_storage" "sd_mod" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
-  boot.kernelParams = [
-    "i915.force_probe=7d55" # graphics
-  ];
+  # boot.kernelParams = [
+  #   # graphics
+  #   "i915.force_probe=!7d55"
+  #   "xe.force_probe=7d55"
+  # ];
   boot.kernelPackages = pkgs.linuxPackages_latest; # use latest kernel waiting for firmware.
   # Sound: https://github.com/thesofproject/linux/issues/4973
   boot.extraModprobeConfig = ''
@@ -83,10 +85,10 @@
   };
 
   # Camera (placeholder)
-  # hardware.ipu6 = {
-  #   enable = true;
-  #   platform = "ipu6epmtl";
-  # };
+  hardware.ipu6 = {
+    enable = true;
+    platform = "ipu6epmtl";
+  };
 
   # Fingerprint Scanner (placeholder)
   services.fprintd.enable = true;
