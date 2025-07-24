@@ -59,7 +59,12 @@
       "dmask=0022"
     ];
   };
-  swapDevices = [ ];
+  swapDevices = [
+    {
+      device = "/var/lib/swapfile";
+      size = 48 * 1024; # 48 GB
+    }
+  ];
 
   # Basic hardware
   hardware.enableRedistributableFirmware = true;
