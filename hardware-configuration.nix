@@ -39,7 +39,6 @@
   boot.extraModprobeConfig = ''
     options snd_sof_intel_hda_common sof_use_tplg_nhlt=1
     options snd_sof_pci tplg_filename=sof-hda-generic-ace1-4ch.tplg
-    options amdgpu pcie_gen_cap=0x00040000
   '';
   boot.extraModulePackages = [ ];
 
@@ -87,15 +86,6 @@
 
       # OpenCL
       intel-compute-runtime
-
-      # AMD eGPU
-      amdvlk
-      rocmPackages.clr.icd
-    ];
-
-    extraPackages32 = with pkgs; [
-      # AMD eGPU
-      driversi686Linux.amdvlk
     ];
   };
 
