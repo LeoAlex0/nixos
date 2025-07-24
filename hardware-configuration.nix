@@ -20,14 +20,10 @@
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
 
-  boot.initrd.availableKernelModules = [
-    "xhci_pci"
-    "thunderbolt"
-    "nvme"
-    "usb_storage"
-    "sd_mod"
-  ];
+  boot.initrd.availableKernelModules = [ ];
   boot.initrd.kernelModules = [ ];
+  boot.initrd.systemd.enable = true;
+
   boot.kernelModules = [ "kvm-intel" ];
   # boot.kernelParams = [
   #   # graphics
@@ -47,6 +43,7 @@
       device = "/dev/disk/by-uuid/8ec13f67-f402-4417-86a0-763edac997f9";
       allowDiscards = true; # Used if primary device is a SSD
       preLVM = true;
+      crypttabExtraOpts = [ "tpm-device=auto" ];
     };
   };
 
