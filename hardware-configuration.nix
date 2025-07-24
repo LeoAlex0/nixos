@@ -1,9 +1,11 @@
 # Set some hardware-specific configuration
-{ pkgs
-, lib
-, config
-, ...
-}: {
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
+{
   # Use the lanzaboote boot loader support secure boot.
   boot.loader.systemd-boot = {
     enable = lib.mkForce false;
@@ -18,7 +20,13 @@
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
 
-  boot.initrd.availableKernelModules = [ "xhci_pci" "thunderbolt" "nvme" "usb_storage" "sd_mod" ];
+  boot.initrd.availableKernelModules = [
+    "xhci_pci"
+    "thunderbolt"
+    "nvme"
+    "usb_storage"
+    "sd_mod"
+  ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
   # boot.kernelParams = [
@@ -35,19 +43,26 @@
   '';
   boot.extraModulePackages = [ ];
 
-  boot.initrd.luks.devices."luks-8ec13f67-f402-4417-86a0-763edac997f9".device = "/dev/disk/by-uuid/8ec13f67-f402-4417-86a0-763edac997f9";
+  boot.initrd.luks.devices = {
+    cryptoroot = {
+      device = "/dev/disk/by-uuid/8ec13f67-f402-4417-86a0-763edac997f9";
+      allowDiscards = true; # Used if primary device is a SSD
+      preLVM = true;
+    };
+  };
 
-  fileSystems."/" =
-    {
-      device = "/dev/disk/by-uuid/bee06f5c-cfda-4816-a514-5a923dcf87dc";
-      fsType = "ext4";
-    };
-  fileSystems."/boot/efi" =
-    {
-      device = "/dev/disk/by-uuid/E848-FC94";
-      fsType = "vfat";
-      options = [ "fmask=0022" "dmask=0022" ];
-    };
+  fileSystems."/" = {
+    device = "/dev/disk/by-uuid/bee06f5c-cfda-4816-a514-5a923dcf87dc";
+    fsType = "ext4";
+  };
+  fileSystems."/boot/efi" = {
+    device = "/dev/disk/by-uuid/E848-FC94";
+    fsType = "vfat";
+    options = [
+      "fmask=0022"
+      "dmask=0022"
+    ];
+  };
   swapDevices = [ ];
 
   # Basic hardware
