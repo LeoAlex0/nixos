@@ -85,6 +85,7 @@
       # Accelerated Video Playback
       intel-media-driver
       libvdpau-va-gl
+      vaapiIntel
 
       # OpenCL
       intel-compute-runtime
@@ -97,12 +98,17 @@
     platform = "ipu6epmtl";
   };
 
+  powerManagement.enable = true;
+
   # Fingerprint Scanner (placeholder)
   services.fprintd.enable = true;
   systemd.services.fprintd = {
     wantedBy = [ "multi-user.target" ];
     serviceConfig.Type = "simple";
   };
+
+  # Laptop config
+  services.thermald.enable = true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 }
