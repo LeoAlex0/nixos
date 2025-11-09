@@ -30,7 +30,7 @@
   #   "i915.force_probe=!7d55"
   #   "xe.force_probe=7d55"
   # ];
-  boot.kernelPackages = pkgs.linuxPackages_latest; # use latest kernel waiting for firmware.
+  # boot.kernelPackages = pkgs.linuxPackages_latest; # use latest kernel waiting for firmware.
   # Sound: https://github.com/thesofproject/linux/issues/4973
   boot.extraModprobeConfig = ''
     options snd_sof_intel_hda_common sof_use_tplg_nhlt=1
@@ -85,7 +85,7 @@
       # Accelerated Video Playback
       intel-media-driver
       libvdpau-va-gl
-      vaapiIntel
+      intel-vaapi-driver
 
       # OpenCL
       intel-compute-runtime
