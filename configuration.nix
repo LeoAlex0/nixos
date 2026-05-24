@@ -68,6 +68,12 @@
   services.displayManager.gdm.enable = true;
   services.desktopManager.gnome.enable = true;
 
+  services.gnome = {
+    core-apps.enable = true;
+    core-developer-tools.enable = true;
+    games.enable = false;
+  };
+
   # Configure keymap in X11
   # services.xserver.layout = "us";
   # services.xserver.xkbOptions = {
@@ -124,6 +130,11 @@
     v2ray-domain-list-community
     v2ray-geoip
     n2n
+
+    # For HDR testing
+    mutter # GNOME's window manager, needed for some extensions.
+    edid-decode
+    lshw
   ];
 
   programs.throne = {
